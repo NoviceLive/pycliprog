@@ -16,7 +16,7 @@ limitations under the License.
 
 
 from logging import getLogger, basicConfig, WARNING
-from argparse import ArgumentParser as _ArgumentParser
+from argparse import ArgumentParser
 import sys
 
 
@@ -36,11 +36,7 @@ class Prog(object):
         self.args = None
 
     def start(self):
-        try:
-            self.args = self.parser.parse_args()
-        except ArgError as exc:
-            logger.error('ArgError: %s', exc)
-            raise
+        self.args = self.parser.parse_args()
 
         config = {}
         config.update(level=self.get_level())
@@ -73,6 +69,21 @@ class Prog(object):
         """
         print('It works! Pass ``--help`` to view usage.')
 
+    def add_logging_args(self):
+        self.add_arg('--log-file',
+                     help='Output logs to the file.')
+        self.add_arg('--append-log',
+                     action='store_true',
+                     help='Append instead of overwrite.')
+
+    def add_basic_args(self):
+        self.add_arg('-v', '--verbose',
+                     action='count', default=0,
+                     help='Output more logs.')
+        self.add_arg('-q', '--quiet',
+                     action='count', default=0,
+                     help='Output less logs.')
+
     def get_format(self):
         fmt = 'pid: %(process)d: '
         fmt += '%(asctime)s: %(levelname)s: '
@@ -85,24 +96,19 @@ class Prog(object):
     def add_args(self):
         """
         Add custom arguments to the parser here.
-
         The parser can be accessed with ``self.parser``.
+
+        New in 0.2.0: You can also use ``self.add_arg``.
         """
         pass
 
-    def add_logging_args(self):
-        self.parser.add_argument('-L', '--log-file',
-                                 help='Output logs to the file.')
-        self.parser.add_argument('-A', '--append-log',
-                                 help='Append logs to the file.')
+    def add_arg(self, *args, **kwargs):
+        """
+        Shorthand for ``self.parser.add_argument``.
 
-    def add_basic_args(self):
-        self.parser.add_argument('-v', '--verbose',
-                                 action='count', default=0,
-                                 help='Output more logs.')
-        self.parser.add_argument('-q', '--quiet',
-                                 action='count', default=0,
-                                 help='Output less logs.')
+        New in 0.2.0.
+        """
+        return self.parser.add_argument(*args, **kwargs)
 
     def make_parser(self):
         """
@@ -112,20 +118,8 @@ class Prog(object):
         return parser
 
 
-class ArgumentParser(_ArgumentParser):
-    """
-    Throwing feature isn't actually required.
-    """
-    def error(self, message):
-        raise ArgError(message)
-
-
 class ExitFailure(Exception):
     """
     Think it as ``EXIT_FAILURE`` from ``<stdlib.h>``.
     """
-    pass
-
-
-class ArgError(Exception):
     pass
