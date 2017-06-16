@@ -9,6 +9,10 @@ PyCliProg 0.2.0 - 2017-XX-XX
 
   - throwing ``ArgumentParser`` & ``ArgError``
 
+- Added names
+
+  - A logger is available via ``self.logger``
+
 - Added shorthands
 
   - ``Prog.add_arg``

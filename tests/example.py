@@ -7,7 +7,9 @@ from pycliprog import Prog, ExitFailure
 class TestProg(Prog):
     def main(self):
         if self.args.fail:
-            raise ExitFailure('Something bad happened!')
+            self.logger.warning('Raising exception...')
+            raise ExitFailure('Something went wrong!')
+        self.logger.info('Reporting status...')
         print('Everything is operational!')
 
     def add_args(self):

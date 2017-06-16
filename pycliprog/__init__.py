@@ -20,14 +20,15 @@ from argparse import ArgumentParser
 import sys
 
 
-logger = getLogger(__name__)
-
-
 class Prog(object):
     """
     A minimal-complete Python command-line program.
+
+    New in 0.2.0: A logger is available via ``self.logger``.
     """
     def __init__(self):
+        self.logger = getLogger(self.__class__.__name__)
+
         self.parser = self.make_parser()
         self.add_basic_args()
         self.add_logging_args()
@@ -46,16 +47,17 @@ class Prog(object):
             if not self.args.append_log:
                 config.update(filemode='w')
         basicConfig(**config)
-        logger.info('args: %s', self.args)
-        logger.info('config: %s', config)
+
+        self.logger.debug('args: %s', self.args)
+        self.logger.debug('config: %s', config)
 
         try:
             self.main()
         except ExitFailure as exc:
-            logger.error('ExitFailure: %s', exc)
+            self.logger.error('ExitFailure: %s', exc)
             code = 1
         except Exception as exc:
-            logger.exception('Unhandled Exception: %s', exc)
+            self.logger.exception('Unhandled Exception: %s', exc)
             code = 1
         else:
             code = 0
@@ -86,7 +88,7 @@ class Prog(object):
 
     def get_format(self):
         fmt = 'pid: %(process)d: '
-        fmt += '%(asctime)s: %(levelname)s: '
+        fmt += '%(asctime)s: %(name)s: %(levelname)s: '
         fmt += '%(module)s.%(funcName)s:%(lineno)s: %(message)s'
         return fmt
 
