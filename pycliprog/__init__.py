@@ -30,7 +30,6 @@ class Prog(object):
         self.logger = getLogger(self.__class__.__name__)
 
         self.parser = self.make_parser()
-        self.add_basic_args()
         self.add_logging_args()
         self.add_args()
 
@@ -72,19 +71,16 @@ class Prog(object):
         print('It works! Pass ``--help`` to view usage.')
 
     def add_logging_args(self):
-        self.add_arg('--log-file',
-                     help='Output logs to the file.')
-        self.add_arg('--append-log',
-                     action='store_true',
-                     help='Append instead of overwrite.')
-
-    def add_basic_args(self):
-        self.add_arg('-v', '--verbose',
-                     action='count', default=0,
-                     help='Output more logs.')
-        self.add_arg('-q', '--quiet',
-                     action='count', default=0,
-                     help='Output less logs.')
+        levels_group = self.parser.add_argument_group('Logging Levels')
+        levels_group.add_argument('-v', '--verbose', action='count', default=0,
+                                  help='Output more logs.')
+        levels_group.add_argument('-q', '--quiet', action='count', default=0,
+                                  help='Output less logs.')
+        files_group = self.parser.add_argument_group('Logging Files')
+        files_group.add_argument('--log-file',
+                                 help='Output logs to the file.')
+        files_group.add_argument('--append-log', action='store_true',
+                                 help='Append to instead of overwriting the log file.')
 
     def get_format(self):
         fmt = 'pid: %(process)d: '
@@ -114,7 +110,7 @@ class Prog(object):
 
     def make_parser(self):
         """
-        Create the argument parser.
+        Create the argument parser here.
         """
         parser = ArgumentParser(description=self.__class__.__name__)
         return parser

@@ -8,6 +8,9 @@ PyCliProg 0.2.0 - 2017-XX-XX
 - Removed names
 
   - throwing ``ArgumentParser`` & ``ArgError``
+  - ``Prog.add_basic_args``
+
+    Merged into ``Prog.add_logging_args``
 
 - Added names
 
@@ -22,6 +25,7 @@ PyCliProg 0.2.0 - 2017-XX-XX
   - Removed the short option ``-L``, the long option unchanged
   - Removed the short option ``-A``, the long option unchanged
   - Fixed ``--append-log`` to be a ``store_true`` action
+  - Grouped the options ``-v/--verbose`` and ``-q/--quiet`` into ``Logging Levels``, ``--log-file`` and ``--append-log`` into ``Logging Files``
 
 
 PyCliProg 0.1.0 - 2017-03-30
