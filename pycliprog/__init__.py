@@ -18,6 +18,7 @@ limitations under the License.
 from logging import getLogger, basicConfig, WARNING
 from argparse import ArgumentParser, RawTextHelpFormatter
 import sys
+import os
 
 
 class Prog(object):
@@ -158,6 +159,19 @@ class Prog(object):
         ``formatter_class`` of ``ArgumentParser``
         """
         return RawTextHelpFormatter
+
+    @staticmethod
+    def read_version(dir_path):
+        if os.path.isfile(dir_path):
+            dir_path = os.path.dirname(dir_path)
+        base_names = ['VERSION.txt', 'VERSION', 'version.txt', 'version']
+        for base_name in base_names:
+            try:
+                with open(os.path.join(dir_path, base_name)) as stream:
+                    return stream.read().strip()
+            except OSError:
+                continue
+        raise RuntimeError('No version file available: %s, tried %s', dir_path, base_names)
 
 
 class ExitFailure(Exception):

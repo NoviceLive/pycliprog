@@ -2,7 +2,7 @@ Change Log For PyCliProg
 ========================
 
 
-PyCliProg 0.2.0 - 2017-XX-XX
+PyCliProg 0.2.0 - 2017-08-08
 ----------------------------
 
 - Removed names
@@ -16,6 +16,7 @@ PyCliProg 0.2.0 - 2017-XX-XX
 
 - Added names
 
+  - ``Prog#read_version``
   - A logger is available via ``self.logger``
   - Some properties
 
