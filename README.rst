@@ -1,9 +1,21 @@
 pycliprog
 =========
 
+.. image:: https://img.shields.io/pypi/v/pycliprog.svg
+   :target: https://pypi.python.org/pypi/PyCliProg
+
+
 A minimal-complete Python command-line program.
 
 Say, dummy code that can be imported by Python command-line programs.
+
+
+Official Mirrors
+----------------
+
+- https://gitlab.com/imtheforce/pycliprog
+- https://bitbucket.org/fourthorigin/pycliprog
+- https://github.com/NoviceLive/pycliprog
 
 
 Get Started
