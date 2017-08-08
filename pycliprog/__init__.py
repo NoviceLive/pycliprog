@@ -16,7 +16,7 @@ limitations under the License.
 
 
 from logging import getLogger, basicConfig, WARNING
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawTextHelpFormatter
 import sys
 
 
@@ -30,8 +30,8 @@ class Prog(object):
         self.logger = getLogger(self.__class__.__name__)
 
         self.parser = self.make_parser()
-        self.add_logging_args()
         self.add_args()
+        self.add_common_args()
 
         self.args = None
 
@@ -70,17 +70,33 @@ class Prog(object):
         """
         print('It works! Pass ``--help`` to view usage.')
 
-    def add_logging_args(self):
-        levels_group = self.parser.add_argument_group('Logging Levels')
+    def add_args(self):
+        """
+        Add custom arguments to the parser here.
+        The parser can be accessed with ``self.parser``.
+
+        New in 0.2.0: You can use the shortcut ``self.add_arg``.
+        """
+        pass
+
+    def add_common_args(self):
+        levels_group = self.parser.add_argument_group('logging level')
         levels_group.add_argument('-v', '--verbose', action='count', default=0,
-                                  help='Output more logs.')
+                                  help='output more logs')
         levels_group.add_argument('-q', '--quiet', action='count', default=0,
-                                  help='Output less logs.')
-        files_group = self.parser.add_argument_group('Logging Files')
+                                  help='output less logs')
+        files_group = self.parser.add_argument_group('logging file')
         files_group.add_argument('--log-file',
-                                 help='Output logs to the file.')
+                                 help='output logs to the file')
         files_group.add_argument('--append-log', action='store_true',
-                                 help='Append to instead of overwriting the log file.')
+                                 help='append to instead of overwriting the file')
+        try:
+            self.version
+        except AttributeError:
+            pass
+        else:
+            about_group = self.parser.add_argument_group('about program')
+            about_group.add_argument('--version', action='version', version=self.version)
 
     def get_format(self):
         fmt = 'pid: %(process)d: '
@@ -91,15 +107,6 @@ class Prog(object):
     def get_level(self):
         return WARNING + (self.args.quiet-self.args.verbose)*10
 
-    def add_args(self):
-        """
-        Add custom arguments to the parser here.
-        The parser can be accessed with ``self.parser``.
-
-        New in 0.2.0: You can also use ``self.add_arg``.
-        """
-        pass
-
     def add_arg(self, *args, **kwargs):
         """
         Shorthand for ``self.parser.add_argument``.
@@ -108,12 +115,49 @@ class Prog(object):
         """
         return self.parser.add_argument(*args, **kwargs)
 
+    def add_group(self, *args, **kwargs):
+        """
+        Shorthand for ``self.parser.add_argument_group``.
+
+        New in 0.2.0.
+        """
+        return self.parser.add_argument_group(*args, **kwargs)
+
     def make_parser(self):
         """
         Create the argument parser here.
         """
-        parser = ArgumentParser(description=self.__class__.__name__)
-        return parser
+        return ArgumentParser(
+            description=self.desc, formatter_class=self.fmtcls, epilog=self.epilog)
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    @property
+    def desc(self):
+        """
+        ``description`` of ``ArgumentParser``.
+        """
+        if self.__doc__:
+            desc = self.__doc__
+        else:
+            desc = self.name
+        return desc
+
+    @property
+    def epilog(self):
+        """
+        ``epilog`` of ``ArgumentParser``
+        """
+        return None
+
+    @property
+    def fmtcls(self):
+        """
+        ``formatter_class`` of ``ArgumentParser``
+        """
+        return RawTextHelpFormatter
 
 
 class ExitFailure(Exception):

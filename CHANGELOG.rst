@@ -10,22 +10,34 @@ PyCliProg 0.2.0 - 2017-XX-XX
   - throwing ``ArgumentParser`` & ``ArgError``
   - ``Prog.add_basic_args``
 
-    Merged into ``Prog.add_logging_args``
+    - Merged into ``Prog.add_logging_args``
+    - Renamed to ``Prog.add_common_args``
+    - Placed after the call of ``self.add_args``
 
 - Added names
 
   - A logger is available via ``self.logger``
+  - Some properties
+
+    - ``Prog.name``
+    - ``Prog.desc``
+    - ``Prog.epilog``
+    - ``Prog.fmtcls``
+    - ``Prog.version``
 
 - Added shorthands
 
   - ``Prog.add_arg``
+  - ``Prog.add_group``
 
 - Other Changes
 
+  - Used help messages in lowercase and without full stops
+  - Used ``RawTextHelpFormatter`` by default
   - Removed the short option ``-L``, the long option unchanged
   - Removed the short option ``-A``, the long option unchanged
   - Fixed ``--append-log`` to be a ``store_true`` action
-  - Grouped the options ``-v/--verbose`` and ``-q/--quiet`` into ``Logging Levels``, ``--log-file`` and ``--append-log`` into ``Logging Files``
+  - Grouped the options ``-v/--verbose`` and ``-q/--quiet`` into ``logging levels``, ``--log-file`` and ``--append-log`` into ``logging files``
 
 
 PyCliProg 0.1.0 - 2017-03-30

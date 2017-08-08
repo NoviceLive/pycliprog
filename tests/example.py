@@ -15,7 +15,7 @@ class TestProg(Prog):
     def add_args(self):
         self.parser.add_argument('-f', '--fail',
                                  action='store_true',
-                                 help='Fail.')
+                                 help='fail')
 
 
 if __name__ == '__main__':
