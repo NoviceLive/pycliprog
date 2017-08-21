@@ -6,6 +6,12 @@ PyCliProg 0.3.0 - 20XX-XX-XX
 ----------------------------
 
 
+- Other changes
+
+  - ``Prog#read_version`` now accepts ``*args`` which are passed to ``os.path.join``
+  - Merged ``logging level`` & ``logging file`` group into ``logging control``
+
+
 PyCliProg 0.2.0 - 2017-08-08
 ----------------------------
 

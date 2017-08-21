@@ -81,15 +81,14 @@ class Prog(object):
         pass
 
     def add_common_args(self):
-        levels_group = self.parser.add_argument_group('logging level')
-        levels_group.add_argument('-v', '--verbose', action='count', default=0,
+        logging_group = self.parser.add_argument_group('logging control')
+        logging_group.add_argument('-v', '--verbose', action='count', default=0,
                                   help='output more logs')
-        levels_group.add_argument('-q', '--quiet', action='count', default=0,
+        logging_group.add_argument('-q', '--quiet', action='count', default=0,
                                   help='output less logs')
-        files_group = self.parser.add_argument_group('logging file')
-        files_group.add_argument('--log-file',
+        logging_group.add_argument('--log-file',
                                  help='output logs to the file')
-        files_group.add_argument('--append-log', action='store_true',
+        logging_group.add_argument('--append-log', action='store_true',
                                  help='append to instead of overwriting the file')
         try:
             self.version
@@ -161,9 +160,10 @@ class Prog(object):
         return RawTextHelpFormatter
 
     @staticmethod
-    def read_version(dir_path):
+    def read_version(dir_path, *args):
         if os.path.isfile(dir_path):
             dir_path = os.path.dirname(dir_path)
+        dir_path = os.path.join(dir_path, *args)
         base_names = ['VERSION.txt', 'VERSION', 'version.txt', 'version']
         for base_name in base_names:
             try:
