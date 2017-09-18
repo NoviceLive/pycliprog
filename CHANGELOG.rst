@@ -5,6 +5,10 @@ Change Log For PyCliProg
 PyCliProg 0.3.0 - 20XX-XX-XX
 ----------------------------
 
+- Added names
+
+  - ``Prog#read_desc``
+  - ``Prog#read_prop``
 
 - Other changes
 

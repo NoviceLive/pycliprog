@@ -146,6 +146,10 @@ class Prog(object):
         return desc
 
     @property
+    def version(self):
+        raise AttributeError('Prog.version should be implemented by subclasses')
+
+    @property
     def epilog(self):
         """
         ``epilog`` of ``ArgumentParser``
@@ -160,18 +164,31 @@ class Prog(object):
         return RawTextHelpFormatter
 
     @staticmethod
+    def read_desc(dir_path, *args):
+        base_names = ['DESC.txt', 'DESC', 'desc.txt', 'desc']
+        return Prog.read_prop(dir_path, base_names, *args)
+
+    @staticmethod
     def read_version(dir_path, *args):
+        base_names = ['VERSION.txt', 'VERSION', 'version.txt', 'version']
+        return Prog.read_prop(dir_path, base_names, *args)
+
+    @staticmethod
+    def read_prop(dir_path, base_names, *args):
         if os.path.isfile(dir_path):
             dir_path = os.path.dirname(dir_path)
         dir_path = os.path.join(dir_path, *args)
-        base_names = ['VERSION.txt', 'VERSION', 'version.txt', 'version']
         for base_name in base_names:
             try:
                 with open(os.path.join(dir_path, base_name)) as stream:
                     return stream.read().strip()
             except OSError:
                 continue
-        raise RuntimeError('No version file available: %s, tried %s', dir_path, base_names)
+        raise PropNotFound('No prop file available: %s, tried %s', dir_path, base_names)
+
+
+class PropNotFound(Exception):
+    pass
 
 
 class ExitFailure(Exception):
