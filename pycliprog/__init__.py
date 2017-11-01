@@ -36,8 +36,11 @@ class Prog(object):
 
         self.args = None
 
+    def parse_args(self):
+        return self.parser.parse_args()
+
     def start(self):
-        self.args = self.parser.parse_args()
+        self.args = self.parse_args()
 
         config = {}
         config.update(level=self.get_level())
