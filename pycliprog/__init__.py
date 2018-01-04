@@ -102,10 +102,7 @@ class Prog(object):
             about_group.add_argument('--version', action='version', version=self.version)
 
     def get_format(self):
-        fmt = 'pid: %(process)d: '
-        fmt += '%(asctime)s: %(name)s: %(levelname)s: '
-        fmt += '%(module)s.%(funcName)s:%(lineno)s: %(message)s'
-        return fmt
+        return '%(levelname)s: %(message)s'
 
     def get_level(self):
         return WARNING + (self.args.quiet-self.args.verbose)*10
