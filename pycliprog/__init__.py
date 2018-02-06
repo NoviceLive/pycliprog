@@ -57,7 +57,7 @@ class Prog(object):
         try:
             self.main()
         except ExitFailure as exc:
-            self.logger.error('ExitFailure: %s', exc)
+            self.logger.error('%s', exc)
             code = 1
         except Exception as exc:
             self.logger.exception('Unhandled Exception: %s', exc)
