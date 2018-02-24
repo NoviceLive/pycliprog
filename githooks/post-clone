@@ -1,0 +1,22 @@
+#! /bin/bash
+
+
+set -e
+set -u
+
+
+verbose() {
+    >&2 echo "====> ${*}" && "${@}"
+}
+
+
+_my_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+
+for pip in pip2 pip3; do
+    verbose "${pip}" --version &&
+        verbose "${pip}" install --upgrade --user --editable "${_my_path}/../"
+done
+
+
+>&2 echo -e '\nAll Done!\n'
