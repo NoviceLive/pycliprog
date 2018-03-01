@@ -2,8 +2,14 @@ Change Log For PyCliProg
 ========================
 
 
-PyCliProg 0.3.0 - 20XX-XX-XX
+PyCliProg 0.3.0 - 2018-03-01
 ----------------------------
+
+- Major breaking changes
+
+  - ``pycliprog`` is now a namespace package
+
+    Use ``pycliprog.argparse`` wherever you use ``pycliprog`` before this change.
 
 - Added names
 
